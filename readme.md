@@ -8,3 +8,10 @@
 - Add Filtering, Sorting(BUG), FieldLimiting(BUG), Pagination feature
 - Refactored the features in a class APIFeatures
 - TODO: Some bugs in Sorting, FieldLimiting methods
+
+### Feb 22 Thur
+
+- Add Aggreation
+- Add Virtual Properties
+- Add Middlewares Document, Query, Aggregation
+- Add Data Validation and External Validation Lib (validatorjs)
