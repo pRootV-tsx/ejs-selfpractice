@@ -8,16 +8,44 @@ exports.aliasTopCheapTours = async (req, res, next) => {
   next();
 };
 
+// AGGREGATION
+exports.getTourStats = async (req, res) => {
+  try {
+    // 1. Matching
+    const stats = await Tour.aggregate([
+      //0. Premlimanry Group
+      { $match: { ratingsAverage: { $gte: 45 } } },
+      {
+        // 1. Aggreagation Group / real magic
+        $group: {
+          _id: '$difficulty',
+          numTours: { $sum: 1 },
+          numRatings: { $sum: '$ratingsQuantity' },
+          avgRatings: { $avg: '$ratingsAverage' },
+          avgPrice: { $avg: '$price' },
+          minPrice: { $min: '$price' },
+          maxPrice: { $max: '$ratingsAverage' },
+        },
+      },
+    ]);
+    res.status(201).json({
+      status: 'success',
+      data: {
+        stats,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      err: err,
+    });
+  }
+};
+
 exports.getAllTours = async (req, res) => {
   try {
     // Create a Instace of APIfeatures for Tours
-    const features = new APIfeatures(Tour.find(), req.query)
-      .filter()
-      // TODO FIX THIS METHOD
-      // .sort()
-      // TODO FIX limits not working
-      .limitFields()
-      .pageinate();
+    const features = new APIfeatures(Tour.find(), req.query).filter();
 
     const tours = await features.query;
     // SEND Responses
