@@ -18,6 +18,7 @@ router
 
 // AggregationRoutes
 router.route('/tour-stats').get(tourController.getTourStats);
+router.route('/monthly-plans/:year').get(tourController.getMontlyPlans);
 router
   .route(`/:id`)
   .get(tourController.getTour)

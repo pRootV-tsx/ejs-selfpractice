@@ -20,6 +20,7 @@
         "array": false
       }
     ],
-    "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }]
+    "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }],
+    "import/no-extraneous-dependencies": ["off"]
   }
 }
