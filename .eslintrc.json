@@ -21,6 +21,6 @@
       }
     ],
     "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }],
-    "import/no-extraneous-dependencies": ["off"]
+    "import/no-extraneous-dependencies": ["off"w]
   }
 }
