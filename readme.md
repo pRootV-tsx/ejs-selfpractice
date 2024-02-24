@@ -15,3 +15,7 @@
 - Add Virtual Properties
 - Add Middlewares Document, Query, Aggregation
 - Add Data Validation and External Validation Lib (validatorjs)
+
+### Feb 23 Thur
+
+- Error Handling
