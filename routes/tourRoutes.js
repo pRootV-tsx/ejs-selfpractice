@@ -1,14 +1,14 @@
 const express = require('express');
 
 const tourController = require('../controllers/tourControllers');
-
+const authController = require('../controllers/authControllers');
 const router = express.Router();
 
 // router.param('id', tourController.checkId);
 
 router
   .route('/')
-  .get(tourController.getAllTours)
+  .get(authController.protect, tourController.getAllTours)
   .post(tourController.createTour); //to create new tours
 
 // Alias Routing

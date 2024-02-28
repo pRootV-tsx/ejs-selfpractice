@@ -22,8 +22,8 @@ app.use(express.json());
 
 // 3. Custom Middleware
 app.use((req, res, next) => {
-  console.log('This is a Custom Middleware'); // eslint-disable-line no-console
   req.requesTime = new Date().toISOString();
+  console.log(req.headers);
   next();
 });
 
@@ -32,7 +32,7 @@ app.use(express.static(`${__dirname}/public`));
 
 // 5.   ROUTES
 app.use('/api/v1/tours', tourRouter);
-app.use('/api/v1/tours', userRouter);
+app.use('/api/v1/users', userRouter);
 
 // 6. ERR Handling
 app.all('*', (req, res, next) => {

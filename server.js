@@ -1,16 +1,6 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
-// ERROR HANDLER
-process.on('uncaughtException', (err) => {
-  console.log(err.name, err.message);
-  // ShutDownt the App
-  server.close(() => {
-    console.log('UNCAUGHT EXPECTION! Shutting Down!...');
-    process.exit(1);
-  });
-});
-
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
@@ -34,6 +24,16 @@ mongoose
 const port = 3000;
 const server = app.listen(port, () => {
   console.log(`Server Running on Port ${port}`); // eslint-disable-line no-console
+});
+
+// ERROR HANDLER
+process.on('uncaughtException', (err) => {
+  console.log(err.name, err.message);
+  // ShutDownt the App
+  server.close(() => {
+    console.log('UNCAUGHT EXPECTION! Shutting Down!...');
+    process.exit(1);
+  });
 });
 
 // manage unhandled Rejects
