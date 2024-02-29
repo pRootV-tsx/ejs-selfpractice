@@ -1,6 +1,19 @@
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {}
+
+  Object.keys(obj).forEach(
+    el => {
+      if (allowedFields.includes(el)){
+        newObj(el) = obj[el ]
+      }
+    }
+  )
+};
+
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
   // console.log(users); //Here passwords are hidden because of select: false in schema
@@ -19,7 +32,7 @@ exports.createUser = (req, res) => {
   });
 };
 
-exports.updateMe = (req, res, next) => {
+exports.updateMe = async (req, res, next) => {
   /* 
     1. Create error if user POSTS password data
     2. Update the user document
@@ -33,13 +46,39 @@ exports.updateMe = (req, res, next) => {
         400,
       ),
     );
-
-    res.status(201).json({
-      status: 'success',
-      
-    });
   }
+
+  const filteredBody = filterObj(req.body, 'name', 'email');
+
+  const updatedUser = await new User.findByIdAndUpdate(
+    req.user.id,
+    filteredBody,
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+
+  res.status(201).json({
+    status: 'success',
+    data:{
+      user: updatedUser
+    }
+  });
 };
+
+
+ exports.deleteMe =  catchAsync(async(req, res,next)=>{
+    await User.findByIdAndUpdate(req.user.id, {active:false})
+    res.status(204).json({
+      status:'success',
+      data: null
+
+    })
+
+    next()
+})
+
 
 exports.getUser = (req, res) => {
   res.status(200).json({
@@ -47,6 +86,9 @@ exports.getUser = (req, res) => {
     message: 'This Callback Function not  Coded! yet',
   });
 };
+
+
+
 exports.updateUser = (req, res) => {
   res.status(200).json({
     status: 'Not Ready',

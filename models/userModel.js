@@ -46,6 +46,11 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false,
   },
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -57,6 +62,12 @@ userSchema.pre('save', async function (next) {
 
   // Delete passwordConfirm field
   this.passwordConfirm = undefined;
+  next();
+});
+
+userSchema.pre(/^find/, function (next) {
+  // this  points to current Query
+  this.find({ active: { $ne: false } });
   next();
 });
 
